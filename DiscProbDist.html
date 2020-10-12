@@ -421,7 +421,7 @@ dpois(15, 20)</code></pre>
 <pre class="r"><code># Average number of customers every 12 months = 10
 # lambda = 10
 # Compute P(X &gt;= 6)
-# P(X &gt;= 6) = P(X = 6) + P(X &gt; 6) 
+# P(X &gt;= 6) = P(X &gt; 6) + P(X = 6) 
 ppois(6, 10, lower.tail=FALSE) + dpois(6,10)</code></pre>
 <pre><code>## [1] 0.932914</code></pre>
 <p><span class="math inline">\(\therefore\)</span> The probability that 6 or more customers will visit in the next 12 months is 0.93 (rounded to 2 decimal places).</p>
