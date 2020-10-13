@@ -1,4 +1,2 @@
-# ctong:Stats
-
 - [Discrete Probability Distributions in R](DiscProbDist.html)
 - [Continuous Probability Distributions in R](ContProbDist.html)
