@@ -1,0 +1,2 @@
+- [Discrete Probability Distributions in R](DistProbDist.html)
+- [Continuous Probability Distributions in R](ContProbDist.html)
