@@ -412,19 +412,19 @@ punif(20,0,30,lower.tail=TRUE) - punif(10,0,30,lower.tail=TRUE)</code></pre>
 <div id="examples-1" class="section level4">
 <h4><strong>Examples</strong></h4>
 <p>The average number of hours that a person uses their cell phone is 218.4 per year. Assume that the standard deviation is 25 hours.</p>
-<p><strong>Q1: <em>Find the probability that a person selected at random uses their cell phone less than 224 hours per year. Answer in decimal form and round to 2 decimal places.</em></strong></p>
+<p><strong>Q1: <em>Assume that cell phone usage is normally distributed. Find the probability that a person selected at random uses their cell phone less than 224 hours per year. Answer in decimal form and round to 2 decimal places.</em></strong></p>
 <pre class="r"><code># m = 218.4, s = 25
 # compute P(X &lt; 224)
 pnorm(224, 218.4, 25, lower.tail=TRUE)</code></pre>
 <pre><code>## [1] 0.5886213</code></pre>
 <p><span class="math inline">\(\therefore\)</span> The probability that a person selected at random uses their cell phone less than 224 hours is 0.59 (rounded to 2 decimal places).</p>
-<p><strong>Q2: <em>If a sample of 40 individuals is randomly selected, find the probability that this sample will have a mean cell phone usage time of greater than 224 hours per year. Answer in decimal form and round to 2 decimal places.</em></strong></p>
+<p><strong>Q2: <em>If a sample of 40 individuals is randomly selected, find the probability that this sample will have a mean cell phone usage time of greater than 224 hours per year. For this question, do not assume that cell phone usage is normally distributed in the population. Answer in decimal form and round to 2 decimal places.</em></strong></p>
 <pre class="r"><code># m = 218.4, s = 25/(40^0.5)
 # compute P(X &gt; 224)
 pnorm(224, 218.4, 25/(40^0.5), lower.tail=FALSE)</code></pre>
 <pre><code>## [1] 0.07828527</code></pre>
-<p><span class="math inline">\(\therefore\)</span> The probability that the sample will have a mean cell phone usage time of greater than 224 hours per year is 0.58 (rounded to 2 decimal places).</p>
-<p><strong>Q3: <em>If a sample of 7 individuals is randomly selected, find the probability that this sample will have a mean cell phone usage time of less than 224 hours per year. Answer in decimal form and round to 2 decimal places.</em></strong></p>
+<p><span class="math inline">\(\therefore\)</span> The probability that the sample will have a mean cell phone usage time of greater than 224 hours per year is 0.08 (rounded to 2 decimal places).</p>
+<p><strong>Q3: <em>If a sample of 7 individuals is randomly selected, find the probability that this sample will have a mean cell phone usage time of less than 224 hours per year. For this question, do not assume that cell phone usage is normally distributed in the population. Answer in decimal form and round to 2 decimal places.</em></strong></p>
 <p>The question did not indicate that the population distribution is normal and the sample size of 7 is too small for central limit theorem to apply. Therefore, we can not assume that the sampling distribution of the mean is normally distributed. We do not have sufficient information to answer this question.</p>
 <hr />
 </div>
