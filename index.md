@@ -1,4 +1,4 @@
 - [Discrete Probability Distributions in R](DiscProbDist.html)
 - [Continuous Probability Distributions in R](ContProbDist.html)
-
+- [Confidence Intervals in R](ConfIntervals.html)
 - [Simulations](http://sims.christinetong.com)
