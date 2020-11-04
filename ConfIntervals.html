@@ -371,8 +371,8 @@ summary {
 
 <div id="section" class="section level1 tabset">
 <h1></h1>
-<div id="estimate-population-mean-mu" class="section level2">
-<h2>Estimate Population Mean (<span class="math inline">\(\mu\)</span>)</h2>
+<div id="ci-for-population-mean-mu" class="section level2">
+<h2>CI for Population Mean (<span class="math inline">\(\mu\)</span>)</h2>
 <div id="notes" class="section level4">
 <h4><strong>NOTES:</strong></h4>
 <ul>
@@ -381,25 +381,27 @@ summary {
 </ul>
 <hr />
 </div>
-<div id="if-sigma-is-known" class="section level4">
-<h4><strong>If <span class="math inline">\(\sigma\)</span> is known:</strong></h4>
-<div class="line-block">   <strong><span class="math inline">\(CI = \bar{x} \pm z_{\alpha/2} (\frac{\sigma}{\sqrt{n}})\)</span></strong></div>
+<div id="ci-for-mu-if-sigma-is-known" class="section level4">
+<h4><strong>CI for <span class="math inline">\(\mu\)</span> if <span class="math inline">\(\sigma\)</span> is known:</strong></h4>
+<div class="line-block">   <strong><span class="math inline">\(\bar{x} \pm z_{\alpha/2} (\frac{\sigma}{\sqrt{n}})\)</span></strong></div>
 <ul>
 <li><span class="math inline">\(\bar{x}\)</span> = sample mean</li>
 <li><span class="math inline">\(\alpha\)</span> = 1 - confidence level</li>
 <li><span class="math inline">\(\sigma\)</span> = population standard deviation</li>
+<li><span class="math inline">\(n\)</span> = sample size</li>
 <li><span class="math inline">\(z_{\alpha/2}\)</span> = <code>qnorm(alpha/2, lower.tail=FALSE)</code></li>
 </ul>
 <hr />
 </div>
-<div id="if-sigma-is-unknown" class="section level4">
-<h4><strong>If <span class="math inline">\(\sigma\)</span> is unknown:</strong></h4>
-<div class="line-block">    <strong><span class="math inline">\(CI = \bar{x} \pm t_{\alpha/2} (\frac{s}{\sqrt{n}})\)</span></strong></div>
+<div id="ci-for-mu-if-sigma-is-unknown" class="section level4">
+<h4><strong>CI for <span class="math inline">\(\mu\)</span> if <span class="math inline">\(\sigma\)</span> is unknown:</strong></h4>
+<div class="line-block">    <strong><span class="math inline">\(\bar{x} \pm t_{\alpha/2} (\frac{s}{\sqrt{n}})\)</span></strong></div>
 <ul>
 <li><span class="math inline">\(\bar{x}\)</span> = sample mean</li>
 <li><span class="math inline">\(\alpha\)</span> = 1 - confidence level</li>
 <li><span class="math inline">\(s\)</span> = sample standard deviation</li>
-<li><span class="math inline">\(df\)</span> = n - 1</li>
+<li><span class="math inline">\(n\)</span> = sample size</li>
+<li><span class="math inline">\(df\)</span> = <span class="math inline">\(n\)</span> - 1</li>
 <li><span class="math inline">\(t_{\alpha/2}\)</span> = <code>qt(alpha/2, df, lower.tail=FALSE)</code></li>
 </ul>
 <hr />
@@ -407,11 +409,12 @@ summary {
 <div id="examples" class="section level4">
 <h4><strong>Examples</strong></h4>
 <p><strong>Q1: <em>A random sample of 50 college students spent an average of 5.4 hours per day on their computers. Assume that the standard deviation for the average time per day spent on computers is 0.6 hours across all college students. Determine the 85% confidence interval for the mean amount of time spent daily on computers across all college students.</em></strong></p>
-<pre class="r"><code>n = 50 # sample size &gt; 30, can assume that sample means will be normally distributed
+<pre class="r"><code># ratio data: amount of time spent on computers each day
+n = 50 # sample size &gt; 30, can assume that sample means will be normally distributed
 sigma = 0.6 # population SD 
 xbar = 5.4 # sample mean
 alpha = 1 - 0.85 # 1 - confidence level
-zcrit = qnorm(alpha/2, lower.tail=FALSE) # population is known, use z distribution for critical value
+zcrit = qnorm(alpha/2, lower.tail=FALSE) # population SD is known, use z distribution for critical value
 ci_min = xbar - zcrit*sigma/sqrt(n) # CI lower bound
 ci_max = xbar + zcrit*sigma/sqrt(n) # CI upper bound
 ci_min</code></pre>
@@ -420,7 +423,8 @@ ci_min</code></pre>
 <pre><code>## [1] 5.522148</code></pre>
 <p><span class="math inline">\(\therefore\)</span> The 85% confidence interval for the mean amount of time spent daily on computers across all college students is 5.28 hours to 5.52 hours.</p>
 <p><strong>Q2: <em>A random sample of 45 college students spent an average of 6.2 hours per day on their computers with a standard deviation of 0.3 hours. Determine the 95% confidence interval for the mean amount of time spent daily on computers across all college students.</em></strong></p>
-<pre class="r"><code>n = 45 # sample size &gt; 30, can assume that sample means will be normally distributed
+<pre class="r"><code># ratio data: amount of time spent on computers each day
+n = 45 # sample size &gt; 30, can assume that sample means will be normally distributed
 s = 0.3 # sample SD 
 xbar = 6.2 # sample mean
 alpha = 1 - 0.95 # 1 - confidence level
@@ -438,10 +442,41 @@ ci_min</code></pre>
 <hr />
 </div>
 </div>
-<div id="estimate-population-proportion-pi" class="section level2">
-<h2>Estimate Population Proportion (<span class="math inline">\(\pi\)</span>)</h2>
-<div id="coming-soon" class="section level3">
-<h3>Coming soon!</h3>
+<div id="ci-for-population-proportion-pi" class="section level2">
+<h2>CI for Population Proportion (<span class="math inline">\(\pi\)</span>)</h2>
+<div id="notes-1" class="section level4">
+<h4><strong>NOTES:</strong></h4>
+<ul>
+<li>For categorical data only (i.e., nominal or ordinal data)</li>
+</ul>
+<hr />
+</div>
+<div id="ci-for-pi" class="section level4">
+<h4><strong>CI for <span class="math inline">\(\pi\)</span>:</strong></h4>
+<div class="line-block">   <strong><span class="math inline">\(\hat{p} \pm z_{\alpha/2} (\sqrt{ \frac{\hat{p}(1-\hat{p})}{n}})\)</span></strong></div>
+<ul>
+<li><span class="math inline">\(\hat{p}\)</span> = sample proportion</li>
+<li><span class="math inline">\(\alpha\)</span> = 1 - confidence level</li>
+<li><span class="math inline">\(n\)</span> = sample size</li>
+<li><span class="math inline">\(z_{\alpha/2}\)</span> = <code>qnorm(alpha/2, lower.tail=FALSE)</code></li>
+</ul>
+<hr />
+</div>
+<div id="examples-1" class="section level4">
+<h4><strong>Examples</strong></h4>
+<p><strong>Q1: <em>A market research company reported that 755 out of 923 people surveyed have high-speed internet access at home. Determine the 99% confidence interval for the proportion of the overall population who have high-speed internet access at home.</em></strong></p>
+<pre class="r"><code># categorical data: each person surveyed either has high-speed internet access or not (yes or no)
+phat = 755/923 # sample proportion
+alpha = 1-0.99 # 1 - confidence level
+n = 923 # sample size
+zcrit = qnorm(alpha/2, lower.tail=FALSE) 
+ci_min = phat - zcrit * sqrt(phat*(1-phat)/n) # CI lower bound
+ci_max = phat + zcrit * sqrt(phat*(1-phat)/n) # CI lower bound
+ci_min</code></pre>
+<pre><code>## [1] 0.7852702</code></pre>
+<pre class="r"><code>ci_max</code></pre>
+<pre><code>## [1] 0.8506995</code></pre>
+<p><span class="math inline">\(\therefore\)</span> The 99% confidence interval for the proportion of the overall population who have high-speed internet access at home is 0.79 to 0.85, i.e. 79% to 85%.</p>
 </div>
 </div>
 </div>
