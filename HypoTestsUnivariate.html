@@ -403,12 +403,12 @@ head (dfHR) # displays the first few lines of dfHR</code></pre>
 </div>
 <div id="s-test-for-mean" class="section level2">
 <h2>1-S Test for Mean</h2>
-<div id="sample-test-for-mean" class="section level3">
-<h3><strong>1-Sample Test for Mean</strong></h3>
+<div id="sample-t-test-for-mean" class="section level3">
+<h3><strong>1-Sample t-Test for Mean</strong></h3>
 <hr />
 <div id="test-description" class="section level4">
 <h4><strong>Test description</strong></h4>
-<p>Compares the mean of a variable in a sample against a hypothetical population mean.</p>
+<p>Compares the mean of a variable in a sample against a hypothetical population mean when the population standard deviation is not known.</p>
 <hr />
 </div>
 <div id="assumptions" class="section level4">
@@ -424,20 +424,21 @@ head (dfHR) # displays the first few lines of dfHR</code></pre>
 </div>
 <div id="r-syntax" class="section level4">
 <h4><strong>R syntax</strong></h4>
+<p>Let <span class="math inline">\(k\)</span> represent the hypothetical population mean. Let <span class="math inline">\(x\)</span> represent the sample variable (can be a vector or a variable in a data frame).</p>
 <p><em>2-tailed test</em></p>
 <ul>
 <li><span class="math inline">\(H_0: \mu = k\)</span></li>
 <li><span class="math inline">\(H_1: \mu \neq k\)</span></li>
 </ul>
 <p><code>t.test(x, mu = k, alternative=&quot;two.sided&quot;)</code></p>
-<p><em>1-tailed test</em></p>
+<p><em>1-tailed tests</em></p>
 <ul>
-<li><span class="math inline">\(H_0: \mu = k\)</span></li>
+<li><span class="math inline">\(H_0: \mu \geq k\)</span></li>
 <li><span class="math inline">\(H_1: \mu &lt; k\)</span></li>
 </ul>
 <p><code>t.test(x, mu = k, alternative=&quot;less&quot;)</code></p>
 <ul>
-<li><span class="math inline">\(H_0: \mu = k\)</span></li>
+<li><span class="math inline">\(H_0: \mu \leq k\)</span></li>
 <li><span class="math inline">\(H_1: \mu &gt; k\)</span></li>
 </ul>
 <p><code>t.test(x, mu = k, alternative=&quot;greater&quot;)</code></p>
@@ -456,6 +457,10 @@ head (dfHR) # displays the first few lines of dfHR</code></pre>
 <div id="sample-analysis" class="section level4">
 <h4><strong>Sample analysis</strong></h4>
 <p>An business consultant indicated that the average income for sales representatives in the publishing industry is $48795. Do the current incomes at ACME publishing support this claim?</p>
+<p><strong><em>Identify the null and alternate hypotheses</em></strong></p>
+<p>Two-tailed test:</p>
+<p><span class="math inline">\(H_0: \mu = 48795\)</span></p>
+<p><span class="math inline">\(H_1: \mu \neq 48795\)</span></p>
 <p><strong><em>[Optional] Create fresh copy of data frame</em></strong></p>
 <pre class="r"><code>myDF &lt;- dfHR</code></pre>
 <p><strong><em>Visualize the data</em></strong></p>
@@ -502,6 +507,7 @@ describe(myDF2$Income)</code></pre>
 ## mean of x 
 ##  51789.94</code></pre>
 <p><strong><em>Interpret results</em></strong></p>
+<p>The question did not explicitly state an <span class="math inline">\(\alpha\)</span> level (also known as the level of significance), so the level of significance will default to the typical .05 level.</p>
 <p>The analysis output indicates that <em>p</em> &lt; .05, so we reject the null hypothesis that the population mean equals 48795. Therefore, the current incomes at ACME publishing do not support the claim that the average income for sales representatives in the publishing industry is $48795.</p>
 <p><strong><em>APA-style results (see section on APA on Blackboard)</em></strong></p>
 <p><span style="color: LightSeaGreen;">The current incomes at ACME publishing (<em>M</em> = 51789.94, <em>SD</em> = 2122.88) suggest that the average income for sales representatives in the publishing industry differs significantly from $48795, <em>t</em>(118) = 15.39, <em>p</em> &lt; .01.</span></p>
@@ -528,31 +534,134 @@ describe(myDF2$Income)</code></pre>
 </div>
 <div id="s-test-for-proportion" class="section level2">
 <h2>1-S Test for Proportion</h2>
-<div id="sample-test-for-proportion" class="section level3">
-<h3><strong>1-Sample Test for Proportion</strong></h3>
+<div id="sample-z-test-for-proportion" class="section level3">
+<h3><strong>1-Sample z-Test for Proportion</strong></h3>
 <hr />
 <div id="test-description-1" class="section level4">
 <h4><strong>Test description</strong></h4>
+<p>Compares a sample proportion against a hypothetical population proportion. A sample proportion refers to the proportion of observations in a sample which falls into a specific category, as defined by a categorical variable.</p>
 <hr />
 </div>
 <div id="assumptions-1" class="section level4">
 <h4><strong>Assumptions</strong></h4>
+<p>The variable of interest must be a categorical variable which identifies whether each observation falls into the specific category of interest.</p>
+<p>Let <span class="math inline">\(n\)</span> represent the sample size and <span class="math inline">\(p\)</span> represent the sample proportion.</p>
+<p>Let <em>success</em> represent observations which fall into the specific category of interest.</p>
+<p>Let <em>failure</em> represent observations which do not fall into the specific category of interest.</p>
+<p>Then:</p>
+<ul>
+<li>Sample size: <span class="math inline">\(n \geq 50\)</span></li>
+<li>Number of successes: <span class="math inline">\(np \geq 5\)</span></li>
+<li>Number of failures: <span class="math inline">\(n(1-p) \geq 5\)</span></li>
+</ul>
 <hr />
 </div>
 <div id="r-syntax-1" class="section level4">
 <h4><strong>R syntax</strong></h4>
+<p>Let <span class="math inline">\(k\)</span> represent the hypothetical population proportion. Let <span class="math inline">\(x\)</span> represent the number of successes in the sample. Success refers to the number of observations which falls into the category of interest.</p>
+<p><em>2-tailed test</em></p>
+<ul>
+<li><span class="math inline">\(H_0: \pi = k\)</span></li>
+<li><span class="math inline">\(H_1: \pi \neq k\)</span></li>
+</ul>
+<p><code>prop.test(x, n, p = k, alternative=&quot;two.sided&quot;, correct = FALSE)</code></p>
+<p><em>1-tailed tests</em></p>
+<ul>
+<li><span class="math inline">\(H_0: \pi \geq k\)</span></li>
+<li><span class="math inline">\(H_1: \pi &lt; k\)</span></li>
+</ul>
+<p><code>prop.test(x, n, p = k, alternative=&quot;less&quot;, correct = FALSE)</code></p>
+<ul>
+<li><span class="math inline">\(H_0: \pi \leq k\)</span></li>
+<li><span class="math inline">\(H_1: \pi &gt; k\)</span></li>
+</ul>
+<p><code>prop.test(x, n, p = k, alternative=&quot;greater&quot;, correct = FALSE)</code></p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li><p>When <code>correct</code> is set to <code>FALSE</code>, <code>prop.test()</code> carries out a <span class="math inline">\(\chi^2\)</span> (chi-squared) test with degree of freedom of 1, which is mathematically equivalent to the 1-sample z-test for proportions.</p></li>
+<li><p>The <span class="math inline">\(\chi^2\)</span> test is a very versatile test with a wide range of applications.</p></li>
+</ul>
 <hr />
 </div>
-<div id="non-parametric-alternative-1" class="section level4">
-<h4><strong>Non-parametric alternative</strong></h4>
+<div id="non-parametric-alternatives" class="section level4">
+<h4><strong>Non-parametric alternatives</strong></h4>
+<p><strong>If <span class="math inline">\(n &lt; 50\)</span>:</strong></p>
+<p>The binomial test may be used:</p>
+<ul>
+<li><code>binom.test(x, n, p = k, alternative = &quot;two.sided&quot;)</code></li>
+<li><code>binom.test(x, n, p = k, alternative = &quot;less&quot;)</code></li>
+<li><code>binom.test(x, n, p = k, alternative = &quot;greater&quot;)</code></li>
+</ul>
+<p><strong>If <span class="math inline">\(n \geq 50\)</span>, but <span class="math inline">\(np &lt; 5\)</span> or <span class="math inline">\(n(1-p) &lt; 5\)</span></strong></p>
+<p>Use <code>prop.test()</code> with the Yates continuity correction:</p>
+<ul>
+<li><code>prop.test(x, n, p = k, alternative = &quot;two.sided&quot;, correct = TRUE)</code></li>
+<li><code>prop.test(x, n, p = k, alternative = &quot;less&quot;, correct = TRUE)</code></li>
+<li><code>prop.test(x, n, p = k, alternative = &quot;greater&quot;, correct = TRUE)</code></li>
+</ul>
 <hr />
 </div>
 <div id="sample-analysis-1" class="section level4">
 <h4><strong>Sample analysis</strong></h4>
+<p>The director of sales at ACME publishing is considering the cancellation of this year’s professional development workshop due to poor attendance last year. She believes that less than 65% of the sales representatives attended last year’s workshop. Does the sample data support this belief at the .01 level of significance?</p>
+<p><strong><em>Identify the null and alternate hypotheses</em></strong></p>
+<p>One-tailed test:</p>
+<p><span class="math inline">\(H_0: \pi \geq .65\)</span></p>
+<p><span class="math inline">\(H_1: \pi &lt; .65\)</span></p>
+<p><strong><em>[Optional] Create fresh copy of data frame</em></strong></p>
+<pre class="r"><code>myDF &lt;- dfHR</code></pre>
+<p><strong><em>Determine n and x</em></strong></p>
+<pre class="r"><code># table() counts the number of observations that falls into each category of ProfDev, Yes for those who attended the workshop and No for those who did not
+pdCounts = table(myDF$ProfDev)
+pdCounts</code></pre>
+<pre><code>## 
+##  No Yes 
+##  49  71</code></pre>
+<pre class="r"><code>n = sum(pdCounts) # n = sample size = sum of observations across ALL categories of ProfDev
+n</code></pre>
+<pre><code>## [1] 120</code></pre>
+<pre class="r"><code>x = pdCounts[&quot;Yes&quot;] # x = number of successes = number of Yes 
+x</code></pre>
+<pre><code>## Yes 
+##  71</code></pre>
+<p><strong><em>Perform z-test if assumptions are met</em></strong></p>
+<p>The sample size, number of successes and failures were 120, 71 and 49 respectively. Therefore, all assumptions were met.</p>
+<pre class="r"><code>prop.test(x,n,p = 0.65, alternative=&quot;less&quot;, correct=FALSE) </code></pre>
+<pre><code>## 
+##  1-sample proportions test without continuity correction
+## 
+## data:  x out of n, null probability 0.65
+## X-squared = 1.7949, df = 1, p-value = 0.09017
+## alternative hypothesis: true p is less than 0.65
+## 95 percent confidence interval:
+##  0.0000000 0.6626597
+## sample estimates:
+##         p 
+## 0.5916667</code></pre>
+<p><strong><em>Interpret results</em></strong></p>
+<p>The question stated a .01 level of significance, so the <code>p-value</code> produced by the analysis should be compared against .01 to determine whether the null hypothesis should be rejected. Note that the sample estimate for proportion is also denote as <code>p</code>, which should not be confused with the <code>p-value</code>.</p>
+<p>The results indicate that <em>p</em> = .09, which is greater than .01. Therefore, we fail to reject the null hypothesis that the 65% or more of the sales representatives attended last year’s workshop. We can not conclude that less than 65% of the sales representatives attended last year’s workshop at a .01 level of significance.</p>
+<p><strong><em>APA-style results (see section on APA on Blackboard)</em></strong></p>
+<p><span style="color: LightSeaGreen;">59% of the sales representatives in the data sample attended last year’s workshop. However, we can not conclude that less than 65% of the sales representatives at the .01 level of significance, <span class="math inline">\(\chi^2\)</span>(1) = 1.79, <em>p</em> = .09.</span></p>
 <hr />
 </div>
 <div id="analysis-notes-1" class="section level4">
 <h4><strong>Analysis notes</strong></h4>
+<p><strong>If sample size was less than 50</strong>, the binomial test can be performed instead. This test produces an exact <code>p-value</code> using the binomial theorem. There is no intermediary test statistic.</p>
+<pre class="r"><code>binom.test(x, n, p=.65, alternative=&quot;less&quot;)</code></pre>
+<pre><code>## 
+##  Exact binomial test
+## 
+## data:  x and n
+## number of successes = 71, number of trials = 120, p-value = 0.1076
+## alternative hypothesis: true probability of success is less than 0.65
+## 95 percent confidence interval:
+##  0.0000000 0.6672771
+## sample estimates:
+## probability of success 
+##              0.5916667</code></pre>
+<p><span style="color: LightSeaGreen;">A binomial test was performed due to the small sample size. 59% of the sales representatives in the data sample attended last year’s workshop. However, we can not conclude that less than 65% of the sales representatives at the .01 level of significance, <em>p</em> = .11.</span></p>
+<p><strong>If sample size was greater than or equal to 50, but the number of successes or failures was less than 5</strong>, apply the Yates continuity correction by setting <code>correct</code> to <code>TRUE</code> in <code>prop.test()</code>.</p>
 <hr />
 </div>
 </div>
