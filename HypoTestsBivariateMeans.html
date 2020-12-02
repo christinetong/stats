@@ -667,7 +667,7 @@ describe(bcIncome)</code></pre>
 <p><code>t.test(y1, y2, paired=TRUE, alternative=&quot;greater&quot;)</code></p>
 <p><strong>Notes:</strong></p>
 <ul>
-<li><code>paired=FALSE</code> indicates a paired samples t-test.</li>
+<li><code>paired=TRUE</code> indicates a paired samples t-test.</li>
 </ul>
 <hr />
 </div>
@@ -748,7 +748,7 @@ describe(myDF2$PerfCurr)</code></pre>
 <p>Note that the mean difference score in the output depends on the order of the variables on the order of the variables entered as input into <code>t.test()</code>. By entering <code>PerfCurr</code> before <code>PerfPrev</code> into <code>t.test()</code>, the difference is computed for each observation as <code>PerfCurr</code> - <code>PerfPrev</code>.</p>
 <p><strong><em>Interpret results</em></strong></p>
 <p>The question did not explicitly state an <span class="math inline">\(\alpha\)</span> level (also known as the level of significance), so the level of significance will default to the typical .05 level.</p>
-<p>The analysis output indicates that <em>p</em> = .06, so we fail to reject the null hypothesis that <span class="math inline">\(\mu_{d} \neq 0\)</span>. Therefore, we conclude that there was no significant change in performance from previous year to the current year for employees who attended the professional development workshop.</p>
+<p>The analysis output indicates that <em>p</em> = .06, so we fail to reject the null hypothesis that <span class="math inline">\(\mu_{d} = 0\)</span>. Therefore, we conclude that there was no significant change in performance from previous year to the current year for employees who attended the professional development workshop.</p>
 <p><strong><em>APA-style results</em></strong></p>
 <p><span style="color: LightSeaGreen;">Among the employees who attended the professional development workshop, there was not a signficant change in performance from last year (<em>M</em> = 6.94, <em>SD</em> = 1.35) to the current year (<em>M</em> = 7.29, <em>SD</em> = 0.97), <em>t</em>(69) = 1.92, <em>p</em> = .06.</span></p>
 <hr />
@@ -764,7 +764,7 @@ describe(myDF2$PerfCurr)</code></pre>
 ## V = 1568.5, p-value = 0.05679
 ## alternative hypothesis: true location shift is not equal to 0</code></pre>
 <p>When reporting the results of a Wilcoxon test in APA-style, include the median instead of mean and standard deviation. Note that the test statistic produced for a Wilcoxon test can vary across software packages.</p>
-<p><span style="color: LightSeaGreen;">A Wilcoxon signed rank test was performed because the data failed to meet the normality assumption. Among the employees who attended the professional development workshop, there was not a signficant change in performance from last year (<em>M</em> = 6.81) to the current year (<em>M</em> = 7.32), <em>V</em> = 1568.5, <em>p</em> = .06.</span></p>
+<p><span style="color: LightSeaGreen;">A Wilcoxon signed rank test was performed because the data failed to meet the normality assumption. Among the employees who attended the professional development workshop, there was not a signficant change in performance from last year (<em>Mdn</em> = 6.81) to the current year (<em>Mdn</em> = 7.32), <em>V</em> = 1568.5, <em>p</em> = .06.</span></p>
 <p><strong>If the null hypothesis was rejected for a paired-samples test</strong>, i.e., we concluded a significant change or difference, then it is good practice to include an additional statement about the mean or median of the difference measure (mean difference for a paired sample t-test; median difference for a Wilcoxon signed rank test). For example, if the paired samples t-test above had produced a <em>p</em> that was less than .05, then you may add the sentence below to your APA-styel interpretation:</p>
 <p><span style="color: LightSeaGreen;"> The mean difference (current year’s performance - last year’s performance) was 0.34.</span></p>
 <hr />
