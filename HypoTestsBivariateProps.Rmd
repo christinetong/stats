@@ -1,0 +1,385 @@
+---
+title: "Bivariate Data: 2-S Test for Proportions"
+author: "For MATH5001 by ctong"
+output: html_document
+---
+
+```{r setup, include=FALSE} 
+
+
+# {r include=F, echo=T, eval=T}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(psych)
+dfHealth <- as.data.frame(read_excel("health.xlsx", sheet = "Data"))
+
+```
+
+# {.tabset}
+
+<!-- Start of tab page block -->
+
+## Import Data
+
+### **Import Data**
+
+Download the patient data file [**health.xlsx**] from Blackboard.
+
+This Excel workbook contains 3 worksheets:
+
+- **Data:** Data compiled by a hospital from 60 patients on the day after their first overnight stay.
+
+- **Dictionary:** Data dictionary for variables included in the **Data** worksheet.
+
+Adapt the following code to import the data into a data frame named `dfHealth`.  If you have not already installed the `readxl` package, run `install.packages("readxl")` before proceeding.
+
+```{r}
+library (readxl)  
+dfHealth <- as.data.frame(read_excel("health.xlsx", sheet = "Data"))
+head (dfHealth) # displays the first few lines of dfHealth
+```
+
+Examine the **Data** list in the **Global Environment** window (typically top right in R-Studio) to confirm that `dfHR` includes 120 observations of 6 variables (i.e., sample size = 60).
+
+<!-- End of tab page block -->
+
+
+
+<!-- Start of tab page block -->
+
+
+## Independent Proportions
+
+### **2-Sample z-Test for Proportions**
+
+-----
+
+#### **Test description**
+
+- Compares the proportions of "successes" in two independent groups.
+- Compares the proportions of "successes" defined by a categorical DV across two levels of a categorical IV.
+
+-----
+
+#### **Assumptions**
+
+The two independent samples are typically defined by two levels of a categorical IV.  The samples must be independent, i.e., each observation must be categorized into one group or the other.
+
+The DV must be a categorical variable which can be used to categorize each observation as a success or failure.
+
+Let *success* represent observations which fall into the specific category of interest.
+
+Let *failure* represent observations which do not fall into the specific category of interest.
+
+Let $n_1$ and $n_2$ represent the sample sizes for the two samples.
+
+Let $p_1$ and $p_2$ represent the proportions of successes in the two samples.
+
+Let $p$ represent the overall proportion of success across both samples.
+
+Then:
+
+- Each sample size must be at least 50, $n_1 \geq 50, n_2 \geq 50$
+- Each sample must include at least 5 successes: $n_1p_1 \geq 5, n_2p_2 \geq 5$
+- Each sample must include at least 5 failures: $n_1(1-p_1) \geq 5, n_2(1-p_2) \geq 5$ 
+- Expected values in each cell of contigency table must be least 5: 
+    - $n_1p \geq 5$
+    - $n_2p \geq 5$
+    - $n_1(1-p) \geq 5$
+    - $n_2(1-p) \geq 5$
+    
+-----
+
+#### **R syntax**
+
+Let $x$ be a vector of the number of successes in each sample, i.e., $x = [n_1p_1, n_2p_2]$
+Let $n$ be a vector of the sample sizes, i.e., $n = [n_1, n_2]$
+
+*2-tailed test*
+
+- $H_0: \pi_1 = \pi_2$ 
+- $H_1: \pi_1 \neq \pi_2$
+
+`prop.test(x, n, alternative="two.sided", correct = FALSE)`
+
+*1-tailed tests*
+
+- $H_0: \pi_1 \geq \pi_2$
+- $H_1: \pi_1 < \pi_2$ 
+
+`prop.test(x, n, alternative="less", correct = FALSE)`
+
+- $H_0: \pi_1 \leq \pi_2$
+- $H_1: \pi_1 > \pi_2$ 
+
+`prop.test(x, n, alternative="greater", correct = FALSE)`
+
+**Notes:** 
+
+- `alternative` is interpreted based on the order in which values are entered in `x` and `n`. `alternative="greater"` indicates an alternative hypothesis where the proportion of success in the first sample represented in `x` and `n` is greater than the proportion of success in the other sample.
+
+- When `correct` is set to `FALSE`, `prop.test()` carries out a $\chi^2$ (chi-squared) test with degree of freedom of 1, which is mathematically equivalent to the 2-sample z-test for proportions. The resulting $\chi^2$ statistic is equal to the square of z from the 2-sample z-test for proportions.
+
+-----
+
+#### **Non-parametric alternatives**
+
+If either sample size is less than 50, or if any of the values listed above in the assumptions section is less than 5, perform a Fisher Exact test instead.  
+
+- `fisher.test(t, alternative = "two.sided")`
+- `fisher.test(t, alternative = "less")`
+- `fisher.test(t, alternative = "greater")`
+
+See `Analysis Notes` at the end of this page for an explanation of the input of `t` for `fisher.test()`.
+
+-----
+
+#### **Sample analysis**
+
+Are patients who arrived by ambulance more likely to experience emesis (vomiting) during the day compared to those who did not arrive by ambulance? 
+
+
+***Identify the null and alternate hypotheses***
+
+One-tailed test:
+
+$H_0: \pi_{ambulance} \leq \pi_{not \ ambulance}$
+
+$H_1: \pi_{ambulance} > \pi_{not \ ambulance}$ 
+
+***[Optional] Create fresh copy of data frame***
+```{r}
+myDF <- dfHealth
+```
+
+
+***Determine n and x***
+```{r}
+# table() creates a contingency table that summarizes the classification of obesrvations across two categorical variables
+t = table(myDF$Transportation, myDF$Day_Emesis)
+t
+
+n = rowSums(t) # vector of sample sizes
+x = t[,"E"] # vector of the number of successes in each sample
+```
+
+***Test assumptions***
+
+```{r}
+# Check if number of successes and failures in each group was at least 5 in t
+t
+```
+Each group contains more than 5 successes and 5 failures.
+```{r}
+# Check if each sample size is at least 50 in n
+n
+```
+The sample sizes are 50 and 70 respectively.
+
+```{r}
+# The following code provides a shortcut to compute n1p, n2p, n1(1-p) and n2(1-p)
+# All values in the generated table must be at least 5
+chisq.test(t)$expected
+```
+
+$n_1p, n_2p, n_1(1-p), n_2(1-p)$ are all $\geq 5$.
+
+***Compute sample proportions from contingency table***
+```{r}
+prop.table(t, 1) # 1 indicates calculate proportions by row
+```
+
+***Perform z-test if assumptions are met***
+
+All assumptions have been met. Perform 2-sample z-test for proportions.
+
+```{r}
+prop.test(x,n,alternative="greater", correct=FALSE) 
+```
+
+***Interpret results***
+
+The question did not state a level of significance, so $\alpha$ of .05 will be used.
+
+The results indicate that *p* = .01, which is less than .05.  Therefore, we reject the null that the proportion of patients who experienced emesis during the day among ambulance users was less than or equal to that among non-ambulance users.  We, therefore, conclude that patients who arrived by ambulance were more likely to experience emesis during the day compared to those who did not arrive by ambulance.
+
+***APA-style results***
+
+<span style="color: LightSeaGreen;">46% of the patients who arrived by ambulance experienced emesis during the day compared to only 26% among patients who did not arrive by ambulance. Patients who arrived by ambulance were more likely to experience emesis during the day compared to patients who did not arrive by ambulance, $\chi^2(1)$ = 5.34, *p* = .01.</span>
+
+-----
+
+#### **Analysis notes**
+
+**If any of the numerical assumptions were violated, i.e., sample size < 50, or any of the required values listed in the assumptions section < 5**, the Fisher Exact test can be performed instead. The input to `fisher.test()` is a contingency table generated by `table()`.  The entry in the first row and first column of this table is interpreted as a success in the first group. The test computes an odds ratio, *OR*, which is compared against the value of 1. 
+
+- If *OR* is equal to 1, then success is equally likely in both groups.
+- If *OR* is significantly greater than 1, then success is more likely in the first group.
+- If *OR* is significantly less than 1, then success is less likely in the first group.
+
+```{r}
+t
+fisher.test(t, alternative="greater")
+```
+
+Note that the entry in the first row and first column of the contingency table is the number of patients who experienced emesis among ambulance users. The Fisher Exact test therefore regarded experiencing emesis as success (no emesis as failure), and ambulance users as the first group. 
+
+Thus, `alternative="greater"` indicated that the alternative hypothesis for this test was that the odds ratio of emesis occuring among ambulance users relative to emesis occuring among non-ambulances users was greater than 1 ($H_0$: $OR \leq 1$).  The `p-value` of .02 is less than .05, therefore, we reject the null hypothesis and conclude that $OR > 1$, i.e., emesis during the day was more likely among ambulance users compared to non-ambulance users.
+
+<span style="color: LightSeaGreen;">A Fisher Exact test was performed due to [provide reason here]. 42% of the patients who arrived by ambulance experienced emesis during the day compared to only 26% among patients who did not arrive by ambulance. Patients who arrived by ambulance were more likely to experience emesis during the day compared to patients who did not arrive by ambulance, *OR* = 2.44, *p* = .02.</span>
+
+-----
+
+
+<!-- End of tab page block -->
+
+
+
+<!-- Start of tab page block -->
+
+
+## Paired Proportions
+
+### **Exact McNemar-Type Test (non-parametric)**
+
+-----
+
+#### **Test description**
+
+- Compares the proportions of "successes" in two related/paired groups
+- Detects "change" or "inconsistency" of success status between two categorical DVs
+
+-----
+
+#### **Assumptions**
+
+There must be two categorical variables which can each be used to classify observations as success and failure.  This test focuses on inconsistency of success status between the categorical variables.
+
+-----
+
+#### **R syntax**
+
+<!-- The odds of success for an event is equal to $\frac{number \  of \ successes}{number \  of \  failures}$. -->
+
+
+<!-- Therefore: -->
+
+<!-- - Odds of success for V1 = $\frac{c+d}{a+b}$ -->
+<!-- - Odds of success for V2 = $\frac{b+d}{a+c}$ -->
+
+<!-- <br/> -->
+
+<!-- Let the odds ratio, $OR$  $\frac{odds \  of \  success \  for  \   V2}{odds \  of \  success \  for  \   V1}$ = $\frac{(c+d)(a+c)}{(a+b)(b+d)}$. -->
+
+This test uses the `exact2x2()` function, which is found in the `exact2x2` package.  It estimates an odds ratio, $OR$, which reflects the relative likelihood of a success in V2 versus V1.
+
+- $OR$ = 1 indicates that success is equally likely for V1 and V2.
+- $OR$ > 1 indicates that success is more likely for V2 than V1.
+- $OR$ < 1 indicates that success is less likely for V2 than V1.
+
+
+`exact2x2()` requires the input of a contingency table, `t`, as shown below:
+
+|              |V2:Failure|V2:Success|
+|--------------|:--------:|:--------:|
+|**V1:Failure**|    a     |    b     |
+|**V1:Success**|    c     |    d     |
+|              |          |          |
+
+Note that b and c define which level of V1 and V2 will be considered as success.
+
+*2-tailed test*
+
+- $H_0: OR = 1$ 
+- $H_1: OR \neq 1$
+
+`exact2x2(t,alternative="two.sided",paired=TRUE)`
+
+*1-tailed tests*
+
+- $H_0: OR \geq 1$
+- $H_1: OR < 1$ 
+
+`exact2x2(t,alternative="less",paired=TRUE)`
+
+- $H_0: OR \leq 1$
+- $H_1: OR > 1$ 
+
+`exact2x2(t,alternative="greater",paired=TRUE)`
+
+-----
+
+#### **Sample analysis**
+
+Patients received medication with dinner at 6 pm.  Is there any change in patients’ likelihood to experience diarrhea between day and night?
+
+***Identify the null and alternate hypotheses***
+
+Two-tailed test:
+
+$H_0: OR = 1$
+
+$H_1: OR \neq 1$
+
+***[Optional] Create fresh copy of data frame***
+```{r}
+myDF <- dfHealth
+```
+
+***Create contingency table***
+```{r}
+t = table(myDF$Day_Diarrhea, myDF$Night_Diarrhea)
+t
+```
+
+b = 9 and c = 27 in the contingency table, so the test will regard **no diarrhea** as **success in V2**, and **no diarrhea** as **success as V1**.
+
+The estimated $OR$ will reflect the relative likelihood of no diarrhea at night versus no diarrhea during the day.
+
+***Perform Exact McNemar-Type Test***
+
+Run `install.packages("exact2x2")` if you have not installed the `exact2x2` package before.
+
+```{r}
+library(exact2x2)
+```
+
+```{r}
+exact2x2(t,alternative="two.sided",paired=TRUE)
+```
+
+Note that `alternative` is interpreted based on what is entered as b and c in the contingency table.  Be sure to select `greater`, `less`, or `two.sided` to suit your hypothesis and contingency table.
+
+***Interpret results***
+
+The question did not state a level of significance, so the `p-value` produced by the analysis should be compared against the default $\alpha$ of .05.
+
+The results indicate that *p* < .01, therefore, we reject the null hypothesis that an equal number of patients changed from no diarrhea to diarrhea and vice versa between day and night.  Instead, we conclude that patients are not equally likely to experience diarrhea between day and night.
+
+***Compute proportions for reporting***
+```{r}
+prop.table(table(myDF$Day_Diarrhea))
+```
+- 57% of patients experienced diarrhea during the day. **V1:FAILURE**
+- 43% of patients did not experience diarrhea during the day. **V1:SUCCESS**
+```{r}
+prop.table(table(myDF$Night_Diarrhea))
+```
+- 72% of patients experienced diarrhea at night. **V2:FAILURE**
+- 28% of patients did not experience diarrhea at night. **V2:SUCCESS** 
+
+***APA-style results***
+
+If you wish to frame your response from the perspective of RELIEF FROM DIARRHEA (i.e., success = no diarrhea):
+
+<span style="color: LightSeaGreen;">43% of the patients did not experience diarrhea during the day, whereas 28% did not experience diarrhea at night.  An Exact McNemar-Type test revealed that patients were not equally likely to get relief from diarrhea between day and night, *OR* = 0.33, *p* < .01.</span>
+
+Alternatively, if you wish to frame your response from the perspective of EXPERIENCING DIARRHEA (i.e., success = diarrhea), then convert the *OR* to its reciprocal, $1/OR$:
+
+<span style="color: LightSeaGreen;">57% of the patients experienced diarrhea during the day, whereas 72% experienced diarrhea at night.  An Exact McNemar-Type test revealed that patients were not equally likely to experience diarrhea between day and night, *OR* = 3.00, *p* < .01.</span>
+
+
+
+-----
+
+<!-- End of tab page block -->
