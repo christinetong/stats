@@ -622,23 +622,37 @@ chisq.test(t)$expected</code></pre>
 </tr>
 </tbody>
 </table>
+<p>The odds of success for an event is equal to <span class="math inline">\(\frac{number \  of \ successes}{number \  of \  failures}\)</span>.</p>
+<p>Therefore:</p>
+<ul>
+<li>Odds of success for V1 = <span class="math inline">\(\frac{c+d}{a+b}\)</span></li>
+<li>Odds of success for V2 = <span class="math inline">\(\frac{b+d}{a+c}\)</span></li>
+</ul>
+<p><br /></p>
+<p>Then, the odds ratio, <span class="math inline">\(OR\)</span> = <span class="math inline">\(\frac{odds \  of \  success \  for \  V1}{odds \  of \  success \  for \  V2}\)</span> = <span class="math inline">\(\frac{(c+d)(a+c)}{(a+b)(b+d)}\)</span>.</p>
+<ul>
+<li><span class="math inline">\(OR\)</span> = 1 indicates that success is equally likely for V1 and V2.</li>
+<li><span class="math inline">\(OR\)</span> &gt; 1 indicates that success is more likely for V1 than V2.</li>
+<li><span class="math inline">\(OR\)</span> &lt; 1 indicates that success is less likely for V1 than V2.</li>
+</ul>
+<p><br /></p>
 <p><em>2-tailed test</em></p>
 <ul>
-<li><span class="math inline">\(H_0: b = c\)</span></li>
-<li><span class="math inline">\(H_1: b \neq c\)</span></li>
+<li><span class="math inline">\(H_0: OR = 1\)</span></li>
+<li><span class="math inline">\(H_1: OR \neq 1\)</span></li>
 </ul>
-<p><code>exact2x2(t,alternative=&quot;two.sided&quot;,paired=T)</code></p>
+<p><code>exact2x2(t,alternative=&quot;two.sided&quot;,paired=TRUE)</code></p>
 <p><em>1-tailed tests</em></p>
 <ul>
-<li><span class="math inline">\(H_0: b \geq c\)</span></li>
-<li><span class="math inline">\(H_1: b &lt; c\)</span></li>
+<li><span class="math inline">\(H_0: OR \geq 1\)</span></li>
+<li><span class="math inline">\(H_1: OR &lt; 1\)</span></li>
 </ul>
-<p><code>exact2x2(t,alternative=&quot;less&quot;,paired=T)</code></p>
+<p><code>exact2x2(t,alternative=&quot;less&quot;,paired=TRUE)</code></p>
 <ul>
-<li><span class="math inline">\(H_0: b \leq c\)</span></li>
-<li><span class="math inline">\(H_1: b &gt; c\)</span></li>
+<li><span class="math inline">\(H_0: OR \leq 1\)</span></li>
+<li><span class="math inline">\(H_1: OR &gt; 1\)</span></li>
 </ul>
-<p><code>exact2x2(t,alternative=&quot;greater&quot;,paired=T)</code></p>
+<p><code>exact2x2(t,alternative=&quot;greater&quot;,paired=TRUE)</code></p>
 <hr />
 </div>
 <div id="sample-analysis-1" class="section level4">
@@ -646,8 +660,8 @@ chisq.test(t)$expected</code></pre>
 <p>Patients received medication with dinner at 6 pm. Is there any change in patients’ likelihood to experience diarrhea between day and night?</p>
 <p><strong><em>Identify the null and alternate hypotheses</em></strong></p>
 <p>Two-tailed test:</p>
-<p><span class="math inline">\(H_0: b = c\)</span></p>
-<p><span class="math inline">\(H_1: b \neq c\)</span></p>
+<p><span class="math inline">\(H_0: OR = 1\)</span></p>
+<p><span class="math inline">\(H_1: OR \neq 1\)</span></p>
 <p>Where b represents the number of patients who did not have diarrhea during the day but experienced diarrhea at night, and c represents the number of patients who had diarrhea during the day but not at night</p>
 <p><strong><em>[Optional] Create fresh copy of data frame</em></strong></p>
 <pre class="r"><code>myDF &lt;- dfHealth</code></pre>
@@ -663,7 +677,7 @@ t</code></pre>
 <pre class="r"><code>library(exact2x2)</code></pre>
 <pre><code>## Loading required package: exactci</code></pre>
 <pre><code>## Loading required package: ssanv</code></pre>
-<pre class="r"><code>exact2x2(t,alternative=&quot;two.sided&quot;,paired=T)</code></pre>
+<pre class="r"><code>exact2x2(t,alternative=&quot;two.sided&quot;,paired=TRUE)</code></pre>
 <pre><code>## 
 ##  Exact McNemar test (with central confidence intervals)
 ## 
