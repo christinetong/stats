@@ -500,7 +500,7 @@ t</code></pre>
 ##   Ambulance     23 27
 ##   Not ambulance 18 52</code></pre>
 <p>Each group contains more than 5 successes and 5 failures.</p>
-<pre class="r"><code># Check if each sample size is at least 5 in n
+<pre class="r"><code># Check if each sample size is at least 50 in n
 n</code></pre>
 <pre><code>##     Ambulance Not ambulance 
 ##            50            70</code></pre>
@@ -538,7 +538,7 @@ chisq.test(t)$expected</code></pre>
 <p>The question did not state a level of significance, so <span class="math inline">\(\alpha\)</span> of .05 will be used.</p>
 <p>The results indicate that <em>p</em> = .01, which is less than .05. Therefore, we reject the null that the proportion of patients who experienced emesis during the day among ambulance users was less than or equal to that among non-ambulance users. We, therefore, conclude that patients who arrived by ambulance were more likely to experience emesis during the day compared to those who did not arrive by ambulance.</p>
 <p><strong><em>APA-style results</em></strong></p>
-<p><span style="color: LightSeaGreen;">46% of the patients who arrived by ambulance experienced emesis during the day compared to only 26% among patients who did not arrive by ambulance. Patients who arrived by ambulance were more likely to experience emesis during the day compared to patients who did not arrive by ambulance, <span class="math inline">\(\chi^2(1)\)</span> = 5.33, <em>p</em> = .01.</span></p>
+<p><span style="color: LightSeaGreen;">46% of the patients who arrived by ambulance experienced emesis during the day compared to only 26% among patients who did not arrive by ambulance. Patients who arrived by ambulance were more likely to experience emesis during the day compared to patients who did not arrive by ambulance, <span class="math inline">\(\chi^2(1)\)</span> = 5.34, <em>p</em> = .01.</span></p>
 <hr />
 </div>
 <div id="analysis-notes" class="section level4">
