@@ -595,7 +595,19 @@ chisq.test(t)$expected</code></pre>
 </div>
 <div id="r-syntax-1" class="section level4">
 <h4><strong>R syntax</strong></h4>
-<p>Let <span class="math inline">\(t\)</span> represent the contingency table shown below:</p>
+<!-- The odds of success for an event is equal to $\frac{number \  of \ successes}{number \  of \  failures}$. -->
+<!-- Therefore: -->
+<!-- - Odds of success for V1 = $\frac{c+d}{a+b}$ -->
+<!-- - Odds of success for V2 = $\frac{b+d}{a+c}$ -->
+<!-- <br/> -->
+<!-- Let the odds ratio, $OR$  $\frac{odds \  of \  success \  for  \   V2}{odds \  of \  success \  for  \   V1}$ = $\frac{(c+d)(a+c)}{(a+b)(b+d)}$. -->
+<p>This test uses the <code>exact2x2()</code> function, which is found in the <code>exact2x2</code> package. It estimates an odds ratio, <span class="math inline">\(OR\)</span>, which reflects the relative likelihood of a success in V2 versus V1.</p>
+<ul>
+<li><span class="math inline">\(OR\)</span> = 1 indicates that success is equally likely for V1 and V2.</li>
+<li><span class="math inline">\(OR\)</span> &gt; 1 indicates that success is more likely for V2 than V1.</li>
+<li><span class="math inline">\(OR\)</span> &lt; 1 indicates that success is less likely for V2 than V1.</li>
+</ul>
+<p><code>exact2x2()</code> requires the input of a contingency table, <code>t</code>, as shown below:</p>
 <table>
 <thead>
 <tr class="header">
@@ -622,20 +634,7 @@ chisq.test(t)$expected</code></pre>
 </tr>
 </tbody>
 </table>
-<p>The odds of success for an event is equal to <span class="math inline">\(\frac{number \  of \ successes}{number \  of \  failures}\)</span>.</p>
-<p>Therefore:</p>
-<ul>
-<li>Odds of success for V1 = <span class="math inline">\(\frac{c+d}{a+b}\)</span></li>
-<li>Odds of success for V2 = <span class="math inline">\(\frac{b+d}{a+c}\)</span></li>
-</ul>
-<p><br /></p>
-<p>Then, the odds ratio, <span class="math inline">\(OR\)</span> = <span class="math inline">\(\frac{odds \  of \  success \  for \  V1}{odds \  of \  success \  for \  V2}\)</span> = <span class="math inline">\(\frac{(c+d)(a+c)}{(a+b)(b+d)}\)</span>.</p>
-<ul>
-<li><span class="math inline">\(OR\)</span> = 1 indicates that success is equally likely for V1 and V2.</li>
-<li><span class="math inline">\(OR\)</span> &gt; 1 indicates that success is more likely for V1 than V2.</li>
-<li><span class="math inline">\(OR\)</span> &lt; 1 indicates that success is less likely for V1 than V2.</li>
-</ul>
-<p><br /></p>
+<p>Note that b and c define which level of V1 and V2 will be considered as success.</p>
 <p><em>2-tailed test</em></p>
 <ul>
 <li><span class="math inline">\(H_0: OR = 1\)</span></li>
@@ -662,7 +661,6 @@ chisq.test(t)$expected</code></pre>
 <p>Two-tailed test:</p>
 <p><span class="math inline">\(H_0: OR = 1\)</span></p>
 <p><span class="math inline">\(H_1: OR \neq 1\)</span></p>
-<p>Where b represents the number of patients who did not have diarrhea during the day but experienced diarrhea at night, and c represents the number of patients who had diarrhea during the day but not at night</p>
 <p><strong><em>[Optional] Create fresh copy of data frame</em></strong></p>
 <pre class="r"><code>myDF &lt;- dfHealth</code></pre>
 <p><strong><em>Create contingency table</em></strong></p>
@@ -672,6 +670,8 @@ t</code></pre>
 ##      D  N
 ##   D 59  9
 ##   N 27 25</code></pre>
+<p>b = 9 and c = 27 in the contingency table, so the test will regard <strong>no diarrhea</strong> as <strong>success in V2</strong>, and <strong>no diarrhea</strong> as <strong>success as V1</strong>.</p>
+<p>The estimated <span class="math inline">\(OR\)</span> will reflect the relative likelihood of no diarrhea at night versus no diarrhea during the day.</p>
 <p><strong><em>Perform Exact McNemar-Type Test</em></strong></p>
 <p>Run <code>install.packages(&quot;exact2x2&quot;)</code> if you have not installed the <code>exact2x2</code> package before.</p>
 <pre class="r"><code>library(exact2x2)</code></pre>
@@ -698,14 +698,23 @@ t</code></pre>
 <pre><code>## 
 ##         D         N 
 ## 0.5666667 0.4333333</code></pre>
-<p>57% of patients experienced diarrhea during the day.</p>
+<ul>
+<li>57% of patients experienced diarrhea during the day. <strong>V1:FAILURE</strong></li>
+<li>43% of patients did not experience diarrhea during the day. <strong>V1:SUCCESS</strong></li>
+</ul>
 <pre class="r"><code>prop.table(table(myDF$Night_Diarrhea))</code></pre>
 <pre><code>## 
 ##         D         N 
 ## 0.7166667 0.2833333</code></pre>
-<p>72% of patients experienced diarrhea at night.</p>
+<ul>
+<li>72% of patients experienced diarrhea at night. <strong>V2:FAILURE</strong></li>
+<li>28% of patients did not experience diarrhea at night. <strong>V2:SUCCESS</strong></li>
+</ul>
 <p><strong><em>APA-style results</em></strong></p>
-<p><span style="color: LightSeaGreen;">57% of the patients experienced diarrhea during the day whereas 72% experienced diarrhea at night. An Exact McNemar-Type test revealed that patients were not equally likely to experience diarrhea between day and night, <em>OR</em> = 0.33, <em>p</em> &lt; .01.</span></p>
+<p>If you wish to frame your response from the perspective of RELIEF FROM DIARRHEA (i.e., success = no diarrhea):</p>
+<p><span style="color: LightSeaGreen;">43% of the patients did not experience diarrhea during the day, whereas 28% did not experience diarrhea at night. An Exact McNemar-Type test revealed that patients were not equally likely to get relief from diarrhea between day and night, <em>OR</em> = 0.33, <em>p</em> &lt; .01.</span></p>
+<p>Alternatively, if you wish to frame your response from the perspective of EXPERIENCING DIARRHEA (i.e., success = diarrhea), then convert the <em>OR</em> to its reciprocal, <span class="math inline">\(1/OR\)</span>:</p>
+<p><span style="color: LightSeaGreen;">57% of the patients experienced diarrhea during the day, whereas 72% experienced diarrhea at night. An Exact McNemar-Type test revealed that patients were not equally likely to experience diarrhea between day and night, <em>OR</em> = 3.00, <em>p</em> &lt; .01.</span></p>
 <hr />
 <!-- End of tab page block -->
 </div>
