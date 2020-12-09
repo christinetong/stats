@@ -414,7 +414,7 @@ head (dfHealth) # displays the first few lines of dfHealth</code></pre>
 <div id="assumptions" class="section level4">
 <h4><strong>Assumptions</strong></h4>
 <p>The two independent samples are typically defined by two levels of a categorical IV. The samples must be independent, i.e., each observation must be categorized into one group or the other.</p>
-<p>The Dv must be a categorical variable which can be used to categorize each observation as a success or failure.</p>
+<p>The DV must be a categorical variable which can be used to categorize each observation as a success or failure.</p>
 <p>Let <em>success</em> represent observations which fall into the specific category of interest.</p>
 <p>Let <em>failure</em> represent observations which do not fall into the specific category of interest.</p>
 <p>Let <span class="math inline">\(n_1\)</span> and <span class="math inline">\(n_2\)</span> represent the sample sizes for the two samples.</p>
@@ -600,20 +600,25 @@ chisq.test(t)$expected</code></pre>
 <thead>
 <tr class="header">
 <th></th>
-<th align="center">V2: Failure</th>
+<th align="center">V2:Failure</th>
 <th align="center">V2:Success</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>V1: Failure</strong></td>
+<td><strong>V1:Failure</strong></td>
 <td align="center">a</td>
 <td align="center">b</td>
 </tr>
 <tr class="even">
-<td><strong>V1: Success</strong></td>
+<td><strong>V1:Success</strong></td>
 <td align="center">c</td>
 <td align="center">d</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td align="center"></td>
+<td align="center"></td>
 </tr>
 </tbody>
 </table>
@@ -622,18 +627,18 @@ chisq.test(t)$expected</code></pre>
 <li><span class="math inline">\(H_0: b = c\)</span></li>
 <li><span class="math inline">\(H_1: b \neq c\)</span></li>
 </ul>
-<p><code>exact2x2(tPaired,alternative=&quot;two.sided&quot;,paired=T)</code></p>
+<p><code>exact2x2(t,alternative=&quot;two.sided&quot;,paired=T)</code></p>
 <p><em>1-tailed tests</em></p>
 <ul>
 <li><span class="math inline">\(H_0: b \geq c\)</span></li>
 <li><span class="math inline">\(H_1: b &lt; c\)</span></li>
 </ul>
-<p><code>exact2x2(tPaired,alternative=&quot;less&quot;,paired=T)</code></p>
+<p><code>exact2x2(t,alternative=&quot;less&quot;,paired=T)</code></p>
 <ul>
 <li><span class="math inline">\(H_0: b \leq c\)</span></li>
 <li><span class="math inline">\(H_1: b &gt; c\)</span></li>
 </ul>
-<p><code>exact2x2(tPaired,alternative=&quot;greater&quot;,paired=T)</code></p>
+<p><code>exact2x2(t,alternative=&quot;greater&quot;,paired=T)</code></p>
 <hr />
 </div>
 <div id="sample-analysis-1" class="section level4">
@@ -670,7 +675,7 @@ t</code></pre>
 ## sample estimates:
 ## odds ratio 
 ##  0.3333333</code></pre>
-<p>Note that <code>alternative</code> is interpreted based on what is entered as b and c in the contingency table. Be sure to select <code>greater</code>, <code>less</code>, or <code>two-sided</code> to suit your hypothesis and contingency table.</p>
+<p>Note that <code>alternative</code> is interpreted based on what is entered as b and c in the contingency table. Be sure to select <code>greater</code>, <code>less</code>, or <code>two.sided</code> to suit your hypothesis and contingency table.</p>
 <p><strong><em>Interpret results</em></strong></p>
 <p>The question did not state a level of significance, so the <code>p-value</code> produced by the analysis should be compared against the default <span class="math inline">\(\alpha\)</span> of .05.</p>
 <p>The results indicate that <em>p</em> &lt; .01, therefore, we reject the null hypothesis that an equal number of patients changed from no diarrhea to diarrhea and vice versa between day and night. Instead, we conclude that patients are not equally likely to experience diarrhea between day and night.</p>
