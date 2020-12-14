@@ -664,12 +664,13 @@ chisq.test(t)$expected</code></pre>
 <p><strong><em>[Optional] Create fresh copy of data frame</em></strong></p>
 <pre class="r"><code>myDF &lt;- dfHealth</code></pre>
 <p><strong><em>Create contingency table</em></strong></p>
-<pre class="r"><code>t = table(myDF$Day_Diarrhea, myDF$Night_Diarrhea)
+<p><code>table()</code> allows an optional input of <code>dnn</code> for specifying row and column labels.</p>
+<pre class="r"><code>t = table(myDF$Day_Diarrhea, myDF$Night_Diarrhea, dnn=c(&quot;Day Diarrhea&quot;, &quot;Night Diarrhea&quot;))
 t</code></pre>
-<pre><code>##    
-##      D  N
-##   D 59  9
-##   N 27 25</code></pre>
+<pre><code>##             Night Diarrhea
+## Day Diarrhea  D  N
+##            D 59  9
+##            N 27 25</code></pre>
 <p>b = 9 and c = 27 in the contingency table, so the test will regard <strong>no diarrhea</strong> as <strong>success in V2</strong>, and <strong>no diarrhea</strong> as <strong>success as V1</strong>.</p>
 <p>The estimated <span class="math inline">\(OR\)</span> will reflect the relative likelihood of no diarrhea at night versus no diarrhea during the day.</p>
 <p><strong><em>Perform Exact McNemar-Type Test</em></strong></p>
