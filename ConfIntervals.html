@@ -272,7 +272,7 @@ alpha = 1-0.99 # 1 - confidence level
 n = 923 # sample size
 zcrit = qnorm(alpha/2, lower.tail=FALSE) 
 ci_min = phat - zcrit * sqrt(phat*(1-phat)/n) # CI lower bound
-ci_max = phat + zcrit * sqrt(phat*(1-phat)/n) # CI lower bound
+ci_max = phat + zcrit * sqrt(phat*(1-phat)/n) # CI upper bound
 ci_min</code></pre>
 <pre><code>## [1] 0.7852702</code></pre>
 <pre class="r"><code>ci_max</code></pre>
