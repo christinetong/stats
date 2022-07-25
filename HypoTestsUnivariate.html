@@ -180,28 +180,28 @@ pre code {
 <p>Download the end of year HR data file [<strong>eoyHR.xlsx</strong>] from Blackboard.</p>
 <p>This Excel workbook contains 2 worksheets:</p>
 <ul>
-<li><p><strong>Data:</strong> Data compiled by the HR department of a publishing company from a random sample of 120 out of their 685 sales representatives</p></li>
+<li><p><strong>Data:</strong> Data compiled by the HR department of a publishing company</p></li>
 <li><p><strong>Dictionary:</strong> Data dictionary for variables included in the <strong>Data</strong> worksheet</p></li>
 </ul>
 <p>Adapt the following code to import the data into a data frame named <code>dfHR</code>. If you have not already installed the <code>readxl</code> package, run <code>install.packages(&quot;readxl&quot;)</code> before proceeding.</p>
 <pre class="r"><code>library (readxl)  
 dfHR &lt;- as.data.frame(read_excel(&quot;eoyHR.xlsx&quot;, sheet = &quot;Data&quot;))
 head (dfHR) # displays the first few lines of dfHR</code></pre>
-<pre><code>##   City      Education ProfDev HrPay   Income PerfPrev PerfCurr Satis BenePrev
-## 1    1 Post-Secondary      No 29.01 52802.20     7.78     7.54  8.95     3095
-## 2    3 Post-Secondary     Yes 27.26 49620.04     5.94     9.66  9.00     2651
-## 3    2      Secondary      No 29.40 53503.69     5.73     6.76  8.99     1174
-## 4    1 Post-Secondary     Yes 27.45 49953.31     5.10     6.19  9.31     3020
-## 5    1      Secondary      No 27.50 50043.81     7.31     7.35  8.45     1180
-## 6    3 Post-Secondary     Yes 30.07 54721.95     7.15     6.86  8.95     3305
-##   BeneCurr Action
-## 1     4024   None
-## 2     3446  Bonus
-## 3     1526   None
-## 4     3926   None
-## 5     1534   None
-## 6     4297   None</code></pre>
-<p>Examine the <strong>Data</strong> list in the <strong>Global Environment</strong> window (typically top right in R-Studio) to confirm that <code>dfHR</code> includes 120 observations of 10 variables (i.e., sample size = 120).</p>
+<pre><code>##   City      Education ProfDev HrPay   Income PerfPrev PerfCurr PerfFore Satis
+## 1    1 Post-Secondary      No 29.01 52802.20     7.78     7.54     7.86  8.95
+## 2    3 Post-Secondary     Yes 27.26 49620.04     5.94     9.66     8.30  9.00
+## 3    2      Secondary      No 29.40 53503.69     5.73     6.76     6.35  8.99
+## 4    1 Post-Secondary     Yes 27.45 49953.31     5.10     6.19     5.75  9.31
+## 5    1      Secondary      No 27.50 50043.81     7.31     7.35     7.93  8.45
+## 6    3 Post-Secondary     Yes 30.07 54721.95     7.15     6.86     7.21  8.95
+##   BenePrev BeneCurr Action
+## 1     3095     4024   None
+## 2     2651     3446  Bonus
+## 3     1174     1526   None
+## 4     3020     3926   None
+## 5     1180     1534   None
+## 6     3305     4297   None</code></pre>
+<p>Examine the <strong>Data</strong> list in the <strong>Global Environment</strong> window (typically top right in R-Studio) to confirm that <code>dfHR</code> includes 120 observations of 12 variables (i.e., sample size = 120).</p>
 <!-- End of tab page block -->
 <!-- Start of tab page block -->
 </div>
@@ -333,7 +333,7 @@ describe(myDF2$Income)</code></pre>
 <p>When reporting the results of a Wilcoxon test in APA-style, include the median instead of mean and standard deviation. The test statistic produced for a Wilcoxon test varies across software packages, so for the sake of simplicity, you may report the p value on its own (see example below).</p>
 <p><span style="color: LightSeaGreen;">A Wilcoxon signed rank test was performed because the data failed to meet the normality assumption. The current incomes at ACME publishing (<em>Mdn</em> = 51857.95) suggest that the median income for sales representatives in the publishing industry differs significantly from $48795, <em>p</em> &lt; .01.</span></p>
 <p><strong>If the question asked whether the ACME data suggests that the average income is greater than $48795</strong>, then a 1-tailed (right-tailed) test should be performed using <code>t.test(myDF2$Income, mu = 48795, alternative=&quot;greater&quot;)</code>.</p>
-<p><strong>If the question asked whether the ACME data suggests that the average income is less than $48795</strong>, then a 1-tailed (left-tailed) test can be performed using <code>t.test(myDF2$Income, mu = 48795, alternative=&quot;less&quot;)</code>. Note that this test is unlikely to produce a significant result (i.e., <em>p</em> &lt; .05) given that the sample mean of $51789.94 is actually greater than $48795.</p>
+<p><strong>If the question asked whether the ACME data suggests that the average income is less than $48795</strong>, then a 1-tailed (left-tailed) test can be performed using <code>t.test(myDF2$Income, mu = 48795, alternative=&quot;less&quot;)</code>. Note that this test is unlikely to produce a significant result (i.e., <em>p</em> &lt; .05) given that the sample mean of $51789.94 is actually greater than $48795..</p>
 <hr />
 <!-- End of tab page block -->
 </div>
@@ -410,7 +410,7 @@ describe(myDF2$Income)</code></pre>
 </div>
 <div id="sample-analysis-1" class="section level4">
 <h4><strong>Sample analysis</strong></h4>
-<p>The director of sales at ACME publishing is considering the cancellation of this year’s professional development workshop due to poor attendance last year. She believes that less than 65% of all the sales representatives attended last year’s workshop. Does the sample data support this belief at the .01 level of significance?</p>
+<p>The director of sales at ACME publishing is considering the cancellation of this year’s professional development workshop due to poor attendance last year. She believes that less than 65% of the sales representatives attended last year’s workshop. Does the sample data support this belief at the .01 level of significance?</p>
 <p><strong><em>Identify the null and alternate hypotheses</em></strong></p>
 <p>One-tailed test:</p>
 <p><span class="math inline">\(H_0: \pi \geq .65\)</span></p>
