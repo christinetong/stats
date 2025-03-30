@@ -1,0 +1,210 @@
+---
+title: "Homework Code/Results"
+author: "For MATH5000 by ctong"
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(psych)
+dfHR <- as.data.frame(read_excel("eoyHR.xlsx", sheet = "Data"))
+dfHR$City<-factor(dfHR$City)
+dfHR$Education<-factor(dfHR$Education)
+```
+
+<!-- ## Data Summary -->
+<!-- ```{r} -->
+<!-- summary(dfHR) -->
+<!-- ``` -->
+
+-----
+
+# {.tabset}
+
+## Q1
+
+##### **Q1. ACME's CEO boasts that they have one of the highest paid sales force in the nation.  He claims that average sales representative is paid over $28 per hour.  Test this claim at a 10% level of significance.**
+
+##### **[Step 1]** Is the variable of interest a scale variable or a categorical variable? Identify the null and alternative hypotheses.  What are the relevant data assumptions?
+
+```{r}
+df<-dfHR
+hpOut<-boxplot(df$HrPay)$out
+df2<-df[!(df$HrPay %in% hpOut),]
+boxplot(df2$HrPay)
+```
+
+##### **[Step 2]** How many outliers were removed?
+
+```{r}
+shapiro.test(df2$HrPay) 
+```
+
+##### **[Step 3]** Were the data assumptions met?
+
+```{r}
+describe(df2$HrPay)
+```
+
+##### **[Step 4]** Which ONE of the following analyses is appropriate for answering this question? 
+
+```{r}
+t.test(df2$HrPay,mu=28, alternative="two.sided")
+t.test(df2$HrPay,mu=28, alternative="less")
+t.test(df2$HrPay,mu=28, alternative="greater")
+wilcox.test(df2$HrPay,mu=28, alternative="two.sided")
+wilcox.test(df2$HrPay,mu=28, alternative="less")
+wilcox.test(df2$HrPay,mu=28, alternative="greater")
+```
+
+##### **[Step 5]** Based on the results of the analysis that you selected in previous step, answer the question in plain language.
+
+
+
+-----
+
+## Q2
+
+##### **Q2. An internal HR report indicated that the sales representatives at ACME publishing claimed less than $3000 in benefits in the current year.  Does the sample data support this claim?**
+
+##### **[Step 1]** Is the variable of interest a scale variable or a categorical variable? Identify the null and alternative hypotheses.  What are the relevant data assumptions?
+
+```{r}
+df<-dfHR 
+ppOut<-boxplot(df$BeneCurr)$out 
+```
+
+##### **[Step 2]** How many outliers were removed?
+
+```{r}
+describe(df$BeneCurr)
+shapiro.test(df$BeneCurr)
+```
+
+##### **[Step 3]** Were the data assumptions met?
+
+##### **[Step 4]** Which ONE of the following analyses is appropriate for answering this question?
+
+```{r}
+t.test(df$BeneCurr, mu = 3000, alternative="less")
+t.test(df$BeneCurr, mu = 3000, alternative="less")
+t.test(df$BeneCurr, mu = 3000, alternative="less")
+wilcox.test(df$BeneCurr, mu = 3000, alternative="less")
+wilcox.test(df$BeneCurr, mu = 3000, alternative="less")
+wilcox.test(df$BeneCurr, mu = 3000, alternative="less")
+```
+
+##### **[Step 5]** Based on the results of the analysis that you selected in previous step, answer the question in plain language.
+
+-----
+
+## Q3
+
+##### **Q3. In a recent company memo at ACME publishing, sales representatives were congratulated for their exceptional performance.  The memo reported that over 10% of the sales representatives were awarded a bonus.  Verify this claim using the sample data provided.**
+
+##### **[Step 1]** Is the variable of interest a scale variable or a categorical variable? Identify the null and alternative hypotheses.  What are the relevant data assumptions?
+
+```{r}
+df<-dfHR
+actionCounts<-table(df$Action) 
+actionCounts
+n = sum(actionCounts)
+n
+x = actionCounts["Bonus"]
+```
+
+##### **[Step 2]** Were the data assumptions met?
+
+##### **[Step 3]** Which ONE of the following analyses is appropriate for answering this question?
+
+```{r}
+prop.test(x,n,p=.1, alternative = "two.sided", correct=FALSE)
+prop.test(x,n,p=.1, alternative = "greater", correct=FALSE)
+prop.test(x,n,p=.1, alternative = "less", correct=FALSE)
+prop.test(x,n,p=.1, alternative = "two.sided", correct=TRUE)
+prop.test(x,n,p=.1, alternative = "greater", correct=TRUE)
+prop.test(x,n,p=.1, alternative = "less", correct=TRUE)
+binom.test(x,n,p=.1, alternative = "two.sided")
+binom.test(x,n,p=.1, alternative = "greater")
+binom.test(x,n,p=.1, alternative = "less")
+```
+
+##### **[Step 4]** Based on the results of the analysis that you selected in the previous step, answer the question in plain language.
+
+-----
+
+## Q4
+
+##### **Q4. One of the sales managers at ACME publishing believes that employees who received a bonus are unlikely to miss professional development workshops.  She believes that among those who received a bonus, less than half missed the workshop.  Does the sample data support this belief at an alpha level of .10?**
+
+##### **[Step 1]** Is the variable of interest a scale variable or a categorical variable? Identify the null and alternative hypotheses.  What are the relevant data assumptions?
+
+```{r}
+df<-subset(dfHR, dfHR$Action=="Bonus")
+pdCounts<-table(df$ProfDev) 
+pdCounts
+n = sum(pdCounts)
+n
+x = pdCounts["No"]
+```
+
+##### **[Step 2]** Were the data assumptions met?
+
+##### **[Step 3]** Which ONE of the following analyses is appropriate for answering this question?
+
+```{r}
+
+prop.test(x,n, p=.5, alternative="two.sided", correct=FALSE)
+prop.test(x,n, p=.5, alternative="greater", correct=FALSE)
+prop.test(x,n, p=.5, alternative="less", correct=FALSE)
+prop.test(x,n, p=.5, alternative="two.sided", correct=TRUE)
+prop.test(x,n, p=.5, alternative="greater", correct=TRUE)
+prop.test(x,n, p=.5, alternative="less", correct=TRUE)
+binom.test(x,n,p=.5, alternative = "two.sided")
+binom.test(x,n,p=.5, alternative = "greater")
+binom.test(x,n,p=.5, alternative = "less")
+```
+
+##### **[Step 4]** Based on the results of the analysis that you selected in the previous step, answer the question in plain language.
+
+-----
+
+## Q5
+
+
+##### **Q5. An internal HR report claimed that last year's performance ratings had an mean score of 7.  Verify this claim using the sample data provided.**
+
+##### **[Step 1]** Is the variable of interest a scale variable or a categorical variable? Identify the null and alternative hypotheses.  What are the relevant data assumptions?
+
+```{r}
+df<-dfHR
+ppOut<-boxplot(df$PerfPrev)$out
+df2<-df[!(df$PerfPrev %in% ppOut),]
+boxplot(df2$PerfPrev)
+```
+
+##### **[Step 2]** How many outliers were removed?
+
+```{r}
+describe(df2$PerfPrev)
+shapiro.test(df2$PerfPrev) 
+```
+
+##### **[Step 3]** Were the data assumptions met?
+
+##### **[Step 4]** Which ONE of the following analyses is appropriate for answering this question?
+
+```{r}
+t.test(df2$PerfPrev, mu = 7, alternative="two.sided")
+t.test(df2$PerfPrev, mu = 7, alternative="greater")
+t.test(df2$PerfPrev, mu = 7, alternative="less")
+wilcox.test(df2$PerfPrev, mu = 7, alternative="two.sided")
+wilcox.test(df2$PerfPrev, mu = 7, alternative="greater")
+wilcox.test(df2$PerfPrev, mu = 7, alternative="less")
+```
+
+##### **[Step 5]** Based on the results of the analysis that you selected in previous step, answer the question in plain language.
