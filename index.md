@@ -1,3 +1,5 @@
+***Statistics I***
+
 - [Simulations](http://sims.christinetong.com)
 
 - [Discrete Probability Distributions in R](DiscProbDist.html)
@@ -7,4 +9,6 @@
 - [Bivariate Hypothesis Testing for Means in R](HypoTestsBivariateMeans.html)
 - [Bivariate Hypothesis Testing for Proportions in R](HypoTestsBivariateProps.html)
 
-- [Stepwise Regression in R](StepwiseReg.html)
+***Machine Learning Fundamentals***
+
+- [Stepwise Regression in R](StepReg.html)
