@@ -6,3 +6,5 @@
 - [Univariate Hypothesis Testing for Means and Proportions in R](HypoTestsUnivariate.html)
 - [Bivariate Hypothesis Testing for Means in R](HypoTestsBivariateMeans.html)
 - [Bivariate Hypothesis Testing for Proportions in R](HypoTestsBivariateProps.html)
+
+- [Stepwise Regression in R](StepwiseRegression.html)
