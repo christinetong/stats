@@ -12,3 +12,4 @@
 ***Machine Learning Fundamentals***
 
 - [Stepwise Regression in R](StepwiseReg.html)
+- [Regularization in R](Regularization.html)
