@@ -466,11 +466,11 @@ S=Southampton</td>
 <pre class="r"><code>df=na.omit(titanic_train) # remove observations with missing data
 df$Survived &lt;- factor(df$Survived, labels = c(&quot;No&quot;, &quot;Yes&quot;))
 
-model_binary &lt;- glm(Survived ~ Pclass+Sex+Age++Fare, data = df, family = binomial)
+model_binary &lt;- glm(Survived ~ Pclass+Sex+Age+Fare, data = df, family = binomial)
 summary(model_binary)</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = Survived ~ Pclass + Sex + Age + +Fare, family = binomial, 
+## glm(formula = Survived ~ Pclass + Sex + Age + Fare, family = binomial, 
 ##     data = df)
 ## 
 ## Coefficients:
