@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="For DATA50XX by ctong" />
 
 
-<title>Naive Bayes Classification Demo with caret</title>
+<title>Classification with Naive Bayes</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -348,47 +349,348 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Naive Bayes Classification Demo with
-caret</h1>
+<h1 class="title toc-ignore">Classification with Naive Bayes</h1>
+<h4 class="author">For DATA50XX by ctong</h4>
 
 </div>
 
 
-<div id="load-packages" class="section level2">
-<h2>📦 Load Packages</h2>
-<pre class="r"><code>library(caret)
-library(mlbench)
-library(dplyr)
-library(naivebayes)</code></pre>
+<div id="section" class="section level1 tabset">
+<h1 class="tabset"></h1>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>Naive Bayes is a simple, fast, and powerful classification algorithm
+based on <strong>Bayes’ Theorem</strong>. It is called “naive” because
+it assumes <strong>feature independence</strong> given the class.</p>
+<div id="key-characteristics" class="section level3">
+<h3>Key Characteristics</h3>
+<ul>
+<li>Based on <strong>Bayesian probability</strong></li>
+<li>Assumes <strong>independent features</strong></li>
+<li>Works well with <strong>text data</strong> and
+<strong>high-dimensional inputs</strong></li>
+<li>Handles both <strong>categorical</strong> and
+<strong>continuous</strong> features</li>
+</ul>
+<hr />
 </div>
-<div id="load-and-prepare-data" class="section level2">
-<h2>📊 Load and Prepare Data</h2>
+<div id="conditional-probability-and-bayes-theorem" class="section level3">
+<h3>Conditional Probability and Bayes’ Theorem</h3>
+<p>Conditional Probability</p>
+<p><span class="math inline">\(P(A | B) = \frac{P (A \cap
+B)}{P(B)}\)</span></p>
+<p>Bayes’ Theorem:</p>
+<p><span class="math inline">\(P(Class | Data) = \frac{P(Data | Class)
+\cdot P(Class)}{P(Data)}\)</span></p>
+<p>In Naive Bayes:</p>
+<ul>
+<li><strong>P(Class)</strong>: Prior probability of the class</li>
+<li><strong>P(Data | Class)</strong>: Likelihood of the data given the
+class</li>
+<li><strong>P(Data)</strong>: Probability of the data - same for all
+classes, can be ignored for comparison</li>
+<li><strong>P(Class | Data)</strong>: Posterior probability of the class
+given the data</li>
+</ul>
+<hr />
+</div>
+<div id="example-spam-detection-with-single-categorical-predictor" class="section level3">
+<h3>Example: Spam detection with single categorical predictor</h3>
+<p>Say we wish to predict two classes labels: “Spam” versus “Ham” from
+one feature: “HasLink” (Yes/No).</p>
+<p>Training Data:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Class</th>
+<th align="center">HasLink</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Spam</td>
+<td align="center">Yes</td>
+</tr>
+<tr class="even">
+<td align="center">Spam</td>
+<td align="center">Yes</td>
+</tr>
+<tr class="odd">
+<td align="center">Ham</td>
+<td align="center">No</td>
+</tr>
+<tr class="even">
+<td align="center">Ham</td>
+<td align="center">Yes</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Compute Posterior Probabilities for observations with HasLink = Yes
+
+# Prior probabilities, aka P(Class)  
+P_spam &lt;- 2/4
+P_ham &lt;- 2/4
+
+# Likelihood for HasLink = yes, aka P(Data | Class)
+P_link_yes_given_spam &lt;- 2/2
+P_link_yes_given_ham &lt;- 1/2
+
+# Posterior for HasLink = yes, aka P(Class | Data)
+posterior_spam &lt;- P_link_yes_given_spam * P_spam
+posterior_ham &lt;- P_link_yes_given_ham * P_ham
+
+# Normalize, i.e., scale posteriors so that they add up to 1
+total &lt;- posterior_spam + posterior_ham
+c(Spam = posterior_spam / total, Ham = posterior_ham / total)</code></pre>
+<pre><code>##      Spam       Ham 
+## 0.6666667 0.3333333</code></pre>
+<p>P(Spam | HasLink = Yes) &gt; P(Ham | HasLink = Yes), therefore
+observations with HasLink = Yes will be classified as Spam.</p>
+<hr />
+</div>
+<div id="example-iris-data-with-multiple-continuous-scale-predictors" class="section level3">
+<h3>Example: Iris Data with multiple continuous scale predictors</h3>
+<p>Naive Bayes assumes that continuous features (scale variables) are
+normally distributed within each class, then uses the Gaussian (normal)
+distribution for likelihood computation.</p>
+<ul>
+<li>Compute mean and standard deviation for each feature by class, then
+use <code>dnorm</code> function to compute likelihood.</li>
+</ul>
+<pre class="r"><code>library(e1071)
+data(iris)
+
+# Fit model using only petal features
+model &lt;- naiveBayes(Species ~ Petal.Length + Petal.Width, data = iris)
+
+# Inspect prior probabilities
+model$apriori</code></pre>
+<pre><code>## Y
+##     setosa versicolor  virginica 
+##         50         50         50</code></pre>
+<pre class="r"><code># Inspect learned means and sds
+model$tables</code></pre>
+<pre><code>## $Petal.Length
+##             Petal.Length
+## Y             [,1]      [,2]
+##   setosa     1.462 0.1736640
+##   versicolor 4.260 0.4699110
+##   virginica  5.552 0.5518947
+## 
+## $Petal.Width
+##             Petal.Width
+## Y             [,1]      [,2]
+##   setosa     0.246 0.1053856
+##   versicolor 1.326 0.1977527
+##   virginica  2.026 0.2746501</code></pre>
+<p>Suppose you need classify an observation with</p>
+<ul>
+<li>Petal.Length = 4.7</li>
+<li>Petal.Width = 1.4</li>
+</ul>
+<p>When there are multiple features, the model assumes that they are
+<strong>conditionally independent given the class</strong>. This means
+we can compute their individual likelihoods by multiplying them to get
+the overall likelihood for each class.</p>
+<div id="compute-posteriors" class="section level4">
+<h4>Compute posteriors</h4>
+<pre class="r"><code># Compute posterior for versicolor, i.e., P(versicolor | Petal.length = 4.7 AND Petal.Width = 1.4)
+
+# Likelihood
+x1 &lt;- 4.7; x2 &lt;- 1.4
+mu1 &lt;- 4.26; sigma1 &lt;- 0.47
+mu2 &lt;- 1.33; sigma2 &lt;- 0.20
+
+prior &lt;- 50/(50 + 50 + 50)
+likelihood &lt;- dnorm(x1, mu1, sigma1) * dnorm(x2, mu2, sigma2)
+posterior &lt;- likelihood * prior
+posterior</code></pre>
+<pre><code>## [1] 0.3424991</code></pre>
+<p>Repeat this for each class (e.g., Setosa, Virginica), then
+<strong>normalize all posterior values</strong> so they sum to 1. The
+class with the <strong>highest posterior</strong> is selected as the
+predicted class.</p>
+<hr />
+</div>
+<div id="normalize-posteriors" class="section level4">
+<h4>Normalize posteriors</h4>
+<p>After computing posteriors for each class, we divide each posterior
+by their sum to ensure the probabilities sum to 1.</p>
+<pre class="r"><code># Hypothetical posteriors for 3 classes
+posterior_class1 &lt;- 1e-10
+posterior_class2 &lt;- 0.03
+posterior_class3 &lt;- 0.001
+
+# Normalize
+total &lt;- posterior_class1 + posterior_class2 + posterior_class3
+normalized_posteriors &lt;- c(
+  class1 = posterior_class1 / total,
+  class2 = posterior_class2 / total,
+  class3 = posterior_class3 / total
+)
+
+normalized_posteriors</code></pre>
+<pre><code>##       class1       class2       class3 
+## 3.225806e-09 9.677419e-01 3.225806e-02</code></pre>
+<pre class="r"><code>sum(normalized_posteriors)  # Should equal 1</code></pre>
+<pre><code>## [1] 1</code></pre>
+<p>The class with the <strong>highest normalized posterior</strong> is
+selected as the predicted class.</p>
+<hr />
+</div>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
+<ul>
+<li>Naive Bayes is simple and effective, especially for high-dimensional
+or text data.</li>
+<li>Uses Bayes’ Theorem to compute posterior class probabilities.
+<ul>
+<li>Each feature contributes a likelihood. Treats categorical features
+via frequency and continuous features via Gaussian likelihood.</li>
+<li>Multiply all feature likelihoods together</li>
+<li>Multiply by the class prior</li>
+<li>Normalize and choose the class with the highest normalized
+posterior</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+<div id="limitations" class="section level3">
+<h3>Limitations</h3>
+<div id="strong-independence-assumption" class="section level5">
+<h5>1. Strong Independence Assumption</h5>
+<ul>
+<li>Features are assumed to be independent given the class, which often
+isn’t true.</li>
+<li>Violating this assumption can reduce accuracy.</li>
+</ul>
+</div>
+<div id="zero-frequency-problem" class="section level5">
+<h5>2. Zero-Frequency Problem</h5>
+<ul>
+<li>Unseen values for even one categorical predictor cause the entire
+class posterior to be zero even if likelihoods from other predictors are
+high. E.g., if “hello” never occurred in SPAM within training data,
+P(“hello” | SPAM) = 0.<br />
+</li>
+<li>Solution: <strong>Laplace smoothing</strong> avoids zero
+probabilities by adding a small constant (usually 1) to every
+count.</li>
+</ul>
+</div>
+<div id="final-posteriors-should-only-be-used-for-comparisons" class="section level5">
+<h5>3. Final posteriors should only be used for comparisons</h5>
+<ul>
+<li>Outputs are not well-calibrated probabilities, just comparative
+scores.</li>
+<li>Use caution in probabilistic decision-making contexts.</li>
+</ul>
+</div>
+<div id="assumes-gaussian-distribution-for-continuous-features" class="section level5">
+<h5>4. Assumes Gaussian Distribution for Continuous Features</h5>
+<ul>
+<li>Real-world distributions are often non-Gaussian.</li>
+<li>Transformation or kernel methods may be needed.</li>
+</ul>
+</div>
+<div id="insensitive-to-feature-interactions" class="section level5">
+<h5>5. Insensitive to Feature Interactions</h5>
+<ul>
+<li>Naive Bayes cannot capture interactions between features.</li>
+</ul>
+</div>
+<div id="sensitive-to-irrelevant-features" class="section level5">
+<h5>6. Sensitive to Irrelevant Features</h5>
+<ul>
+<li>Noisy or irrelevant features can dilute the strength of good
+features.</li>
+</ul>
+<hr />
+</div>
+</div>
+</div>
+<div id="demo" class="section level2">
+<h2>Demo</h2>
+<div id="load-packages" class="section level3">
+<h3>Load Packages</h3>
+<pre class="r"><code>library(caret)</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre class="r"><code>library(mlbench)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(naivebayes)</code></pre>
+<pre><code>## naivebayes 1.0.0 loaded</code></pre>
+<pre><code>## For more information please visit:</code></pre>
+<pre><code>## https://majkamichal.github.io/naivebayes/</code></pre>
+</div>
+<div id="load-and-prepare-data" class="section level3">
+<h3>Load and Prepare Data</h3>
 <p>We’ll use the <code>PimaIndiansDiabetes2</code> dataset again.</p>
 <pre class="r"><code>data(PimaIndiansDiabetes2)
 df &lt;- na.omit(PimaIndiansDiabetes2)  # remove rows with missing values
 
 # Inspect the data
 str(df)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    392 obs. of  9 variables:
+##  $ pregnant: num  1 0 3 2 1 5 0 1 1 3 ...
+##  $ glucose : num  89 137 78 197 189 166 118 103 115 126 ...
+##  $ pressure: num  66 40 50 70 60 72 84 30 70 88 ...
+##  $ triceps : num  23 35 32 45 23 19 47 38 30 41 ...
+##  $ insulin : num  94 168 88 543 846 175 230 83 96 235 ...
+##  $ mass    : num  28.1 43.1 31 30.5 30.1 25.8 45.8 43.3 34.6 39.3 ...
+##  $ pedigree: num  0.167 2.288 0.248 0.158 0.398 ...
+##  $ age     : num  21 33 26 53 59 51 31 33 32 27 ...
+##  $ diabetes: Factor w/ 2 levels &quot;neg&quot;,&quot;pos&quot;: 1 2 2 2 2 2 2 1 2 1 ...
+##  - attr(*, &quot;na.action&quot;)= &#39;omit&#39; Named int [1:376] 1 2 3 6 8 10 11 12 13 16 ...
+##   ..- attr(*, &quot;names&quot;)= chr [1:376] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;6&quot; ...</code></pre>
 </div>
-<div id="set-up-cross-validation" class="section level2">
-<h2>🧪 Set Up Cross-Validation</h2>
-<p>We use 10-fold cross-validation for evaluation.</p>
+<div id="cross-validation-with-caret" class="section level3">
+<h3>Cross-Validation with Caret</h3>
 <pre class="r"><code>set.seed(123)
-ctrl &lt;- trainControl(method = &quot;cv&quot;, number = 10)</code></pre>
-</div>
-<div id="train-naive-bayes-model" class="section level2">
-<h2>🏗️ Train Naive Bayes Model</h2>
-<pre class="r"><code>nb_model &lt;- train(diabetes ~ ., 
+
+grid &lt;- expand.grid(
+  laplace = 1,     # Laplace smoothing
+  usekernel = FALSE,  # Disables kernel density (optional)
+  adjust = 1        # Needed but ignored when usekernel = FALSE
+)
+
+ctrl &lt;- trainControl(method = &quot;cv&quot;, number = 10)
+nb_model &lt;- train(diabetes ~ ., 
                   data = df,
                   method = &quot;naive_bayes&quot;,
                   trControl = ctrl,
-                  preProcess = c(&quot;center&quot;, &quot;scale&quot;))
+                  preProcess = c(&quot;center&quot;, &quot;scale&quot;),
+                  tuneGrid=grid)
 
 print(nb_model)</code></pre>
-</div>
-<div id="understanding-the-output" class="section level2">
-<h2>📈 Understanding the Output</h2>
-<p>The model output includes:</p>
+<pre><code>## Naive Bayes 
+## 
+## 392 samples
+##   8 predictor
+##   2 classes: &#39;neg&#39;, &#39;pos&#39; 
+## 
+## Pre-processing: centered (8), scaled (8) 
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 352, 353, 353, 353, 353, 353, ... 
+## Resampling results:
+## 
+##   Accuracy   Kappa    
+##   0.7702564  0.4791674
+## 
+## Tuning parameter &#39;laplace&#39; was held constant at a value of 1
+## Tuning
+##  parameter &#39;usekernel&#39; was held constant at a value of FALSE
+## Tuning
+##  parameter &#39;adjust&#39; was held constant at a value of 1</code></pre>
 <ul>
 <li><strong>Accuracy</strong>: Proportion of correct predictions across
 cross-validation folds.</li>
@@ -398,26 +700,49 @@ labels, adjusted for chance.</li>
 <p>Naive Bayes works well with: - Independent predictors (assumes
 conditional independence) - High-dimensional data - Minimal tuning
 (default works well)</p>
-<p>The <code>train()</code> function: - Applies centering and scaling
-(helps for Gaussian NB when features vary in range) - Estimates
-class-conditional distributions for each predictor</p>
-<p>You can visualize model performance:</p>
-<pre class="r"><code>plot(nb_model)</code></pre>
 </div>
-<div id="confusion-matrix" class="section level2">
-<h2>📊 Confusion Matrix</h2>
-<p>Evaluate performance on the training data:</p>
+<div id="confusion-matrix" class="section level3">
+<h3>Confusion Matrix</h3>
 <pre class="r"><code>pred &lt;- predict(nb_model, newdata = df)
 confusionMatrix(pred, df$diabetes)</code></pre>
-<p>Key metrics:</p>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction neg pos
+##        neg 220  45
+##        pos  42  85
+##                                           
+##                Accuracy : 0.7781          
+##                  95% CI : (0.7336, 0.8182)
+##     No Information Rate : 0.6684          
+##     P-Value [Acc &gt; NIR] : 1.229e-06       
+##                                           
+##                   Kappa : 0.4964          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.8302          
+##                                           
+##             Sensitivity : 0.8397          
+##             Specificity : 0.6538          
+##          Pos Pred Value : 0.8302          
+##          Neg Pred Value : 0.6693          
+##              Prevalence : 0.6684          
+##          Detection Rate : 0.5612          
+##    Detection Prevalence : 0.6760          
+##       Balanced Accuracy : 0.7468          
+##                                           
+##        &#39;Positive&#39; Class : neg             
+## </code></pre>
 <ul>
 <li><strong>Sensitivity</strong>: True positive rate</li>
 <li><strong>Specificity</strong>: True negative rate</li>
 <li><strong>Balanced Accuracy</strong>: Average of sensitivity and
 specificity</li>
 </ul>
-<p>These give you a complete picture of how well the model identifies
-each class.</p>
+<p>For binary classification, can also plot ROC curves and compute
+AUC.</p>
+<hr />
+</div>
+</div>
 </div>
 
 
