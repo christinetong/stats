@@ -14,3 +14,4 @@
 - [Regularization in R](Regularization.html)
 - [Classification in R](ClassificationIntro.html)
 - [Logistic Regression in R](LogisticRegression.html)
+- [K Nearest Neighbours in R](kNearestNeighbours.html)
