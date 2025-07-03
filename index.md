@@ -15,3 +15,4 @@
 - [Classification in R](ClassificationIntro.html)
 - [Logistic Regression in R](LogisticRegression.html)
 - [K Nearest Neighbours in R](kNearestNeighbours.html)
+- [Naive Bayes in R](NaiveBayes.html)
