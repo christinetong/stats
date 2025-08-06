@@ -18,3 +18,5 @@
 - [Naive Bayes in R](NaiveBayes.html)
 - [Decision Trees in R](DecisionTrees.html)
 - [Support Vector Machines in R](SupportVectorMachines.html)
+- [Clustering Methods in R)[Clustering.html)
+- [Principal Components Analysis in R](PrincipalComponents.html)
